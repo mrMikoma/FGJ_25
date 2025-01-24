@@ -29,10 +29,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Debug Branch Name
-        run: |
-          echo "Branch name: ${{ steps.extract_branch.outputs.BRANCH_NAME }}"
-
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
@@ -84,52 +80,17 @@ jobs:
   #              repo: context.repo.repo,
   #              body: commentBody
   #            });
-
-  display-game-state:
-    if: ${{ github.event.issue.pull_request }}
-    needs: process_comment
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          ref: test-38
-      - name: Create Game State Markdown
-        run: |
-          # Read the game state file
-          initial_game_state=$(cat ./states/game-state-test-38.json)
-
-          # Extract relevant game state information
-          player_1_name=$(echo $initial_game_state | jq -r '.player_1.name')
-          player_1_score=$(echo $initial_game_state | jq -r '.player_1.score')
-          player_2_name=$(echo $initial_game_state | jq -r '.player_2.name')
-          player_2_score=$(echo $initial_game_state | jq -r '.player_2.score')
-          current_player=$(echo $initial_game_state | jq -r '.current_player')
-
-          # Convert game_state array to markdown format
-          game_state_markdown=""
-
-          for row in $(echo $initial_game_state | jq -r '.game_state | .[] | @base64'); do
-            row_markdown=$(echo $row | base64 --decode | tr -d '[],"' | tr '\n' ' ' | sed 's/  / | /g')
-            game_state_markdown="$game_state_markdown| $row_markdown |\n"
-          done
-
-          # Prepare the formatted message
-          message="### Initial Game State\n\n**Player 1**: $player_1_name (Score: $player_1_score)\n**Player 2**: $player_2_name (Score: $player_2_score)\n**Current Player**: $current_player\n\n**Game State:**\n\n\`\`\`markdown\n$game_state_markdown\`\`\`"
-
-          # Save the message to a temporary file
-          echo "$message" > ./game-state-message.md
-
       - name: Generate Markdown Summary
+        id: generate_game_state_markdown
         uses: Ma11hewThomas/github-markdown-builder@v1
         with:
           template-file-path: "./states/example.hbs"
           json-file-path: "./states/example.json"
           summary: true
           pull-request: true
-
+        
       - name: Comment PR with Game State
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ github.event.pull_request.number }}
-          file-path: ./game-state-message.md
+          file-path: ${{ steps.generate_game_state_markdown.outputs.markdown }}
