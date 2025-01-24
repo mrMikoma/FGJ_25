@@ -27,7 +27,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: NEW GAME STARTED!
-          base: ${{ github.base_ref }}
+          base: main
+          branch: ${{ github.ref_name }}
           draft: always-true
           title: NEW GAME STARTED!
           body: |
