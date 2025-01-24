@@ -17,6 +17,14 @@ jobs:
         run: |
           cp ./states/game-state-template.json ./states/game-state-${{ github.ref_name }}.json
 
+      - name: Commit Game State
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add ./states/game-state-${{ github.ref_name }}.json
+          git commit -m "Initialize a new game"
+          git push --set-upstream origin ${{ github.ref_name }}
+
       - name: Open Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
@@ -24,9 +32,7 @@ jobs:
           commit-message: NEW GAME STARTED!
           base: main
           branch: ${{ github.ref_name }}
-          add-paths: |
-            ./states/game-state-${{ github.ref_name }}.json
-          draft: true
+          draft: false
           title: NEW GAME STARTED!
           body: |
             🎮 **LET THE GAMES BEGIN!** 🎮
