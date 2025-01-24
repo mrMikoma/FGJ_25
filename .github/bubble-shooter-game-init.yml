@@ -3,6 +3,10 @@ name: Initialize Game State
 on:
   pull_request:
     types: [opened]
+  create:
+    branches:
+      - '*'
+      - '!main'
 
 jobs:
   init-game:
