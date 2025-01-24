@@ -15,19 +15,12 @@ jobs:
 
       - name: Set Up Game State
         run: |
-          branch_name=$(echo $GITHUB_REF | sed 's/refs\/heads\///')
-          echo '{
-            "grid": [["-", "-", "-", "-", "-"], ["-", "-", "-", "-", "-"], ["-", "-", "-", "-", "-"]],
-            "player1_defense": 1,
-            "player2_defense": 1,
-            "next_turn": "player1",
-            "bubbles": []
-          }' > game-state-${branch_name}.json
+          cp ./states/game-state-template.json game-state-${{github.ref_name}}.json
 
       - name: Commit Game State
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add game-state-${branch_name}.json
+          git add game-state-${{github.ref_name}}.json
           git commit -m "Initialize game state"
           git push
