@@ -16,12 +16,11 @@ jobs:
 
       - name: Extract Branch Name
         id: extract_branch
-        run: |
-          echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
 
       - name: Display Branch Name
         run: |
-          echo "Branch Name: ${{ steps.extract_branch.outputs.branch_name }}"
+          echo "Branch Name: ${{ steps.extract_branch.outputs.BRANCH_NAME }}"
 
       - name: Validate Comment Command
         id: validate_command
