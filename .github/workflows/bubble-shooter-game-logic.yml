@@ -10,17 +10,18 @@ jobs:
   extract-branch-name:
     runs-on: ubuntu-latest
     steps:
-    -  name: Checkout Repository
-       uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Get Branch Name from PR ID
-      run: |
-        pr_number=${{ github.event.issue.number }}
-        BRANCH_NAME=$(gh pr view $pr_number --json headRefName -q '.headRefName')
-        echo "The branch name is: $BRANCH_NAME"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
+      - name: Get Branch Name from PR ID
+        run: |
+          pr_number=${{ github.event.issue.number }}
+          BRANCH_NAME=$(gh pr view $pr_number --json headRefName -q '.headRefName')
+          echo "{BRANCH_NAME}= $BRANCH_NAME" >> "$GITHUB_OUTPUT"
+          echo "The branch name is: $BRANCH_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   process-comment:
     needs: extract-branch-name
     if: ${{ github.event.issue.pull_request }}
@@ -125,8 +126,8 @@ jobs:
       - name: Generate Markdown Summary
         uses: Ma11hewThomas/github-markdown-builder@v1
         with:
-          template-file-path: './states/example.hbs'
-          json-file-path: './states/example.json'
+          template-file-path: "./states/example.hbs"
+          json-file-path: "./states/example.json"
           summary: true
           pull-request: true
 
