@@ -35,7 +35,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12' 
+          python-version: "3.12"
 
       #      - name: Install Dependencies
       #        run: |
@@ -47,22 +47,23 @@ jobs:
         run: |
           COMMENT="${{ github.event.comment.body }}"
           if [[ $COMMENT =~ ^move\ ([0-9]+)\ ([0-9]+)$ ]]; then
+            mv ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json game_state.json
             ROW=${BASH_REMATCH[1]}
             COL=${BASH_REMATCH[2]}
             echo "Moving to row $ROW, col $COL"
-            # python bubble_pop_game.py move $ROW $COL
-            # mv game_state.json ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
+            python bubble_pop_game.py move $ROW $COL
+            mv game_state.json ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
           else
             echo "Invalid command. Use 'move <row> <col>' to pop a bubble."
           fi
 
-      #      - name: Commit Game State
-      #        run: |
-      #          git config --global user.name "github-actions[bot]"
-      #          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      #          git add ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
-      #          git commit -m "Update game state"
-      #          git push
+      - name: Commit Game State
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
+          git commit -m "Update game state"
+          git push
 
       - name: Generate Markdown Summary
         id: generate_game_state_markdown
