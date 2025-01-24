@@ -6,31 +6,16 @@ on:
 jobs:
   init-game:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Extract branch name
-        id: extract_branch
-        shell: bash
-        run: |
-          echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-
-      - name: Debug branch name
-        run: |
-          echo "Branch name is ${{ steps.extract_branch.outputs.branch_name }}"
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Set Up Game State
         run: |
-          cp ./states/game-state-template.json ./states/game-state-${{github.ref_name}}.json
-
-      - name: Commit Game State
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add ./states/game-state-${{github.ref_name}}.json
-          git commit -m "Initialize a new game"
-          git push
+          cp ./states/game-state-template.json ./states/game-state-${{ github.ref_name }}.json
 
       - name: Open Pull Request
         uses: peter-evans/create-pull-request@v7
@@ -39,9 +24,12 @@ jobs:
           commit-message: NEW GAME STARTED!
           base: main
           branch: ${{ github.ref_name }}
-          draft: always-true
+          add-paths: |
+            ./states/game-state-${{ github.ref_name }}.json
+          draft: true
           title: NEW GAME STARTED!
           body: |
             🎮 **LET THE GAMES BEGIN!** 🎮
             Get ready to play and have fun! 🚀
-            player_2 will start the game. 🎲
+
+            Player 2 will start the game. 🎲
