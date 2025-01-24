@@ -1,0 +1,25 @@
+name: Clean Up Game State
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup-game:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Remove Game State File
+        run: |
+          rm -f game_state.json
+
+      - name: Commit Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -u
+          git commit -m "Clean up game state"
+          git push
