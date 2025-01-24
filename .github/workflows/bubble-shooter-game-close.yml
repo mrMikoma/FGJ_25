@@ -3,6 +3,7 @@ name: Clean Up Game State
 on:
   pull_request:
     types: [closed]
+  delete:
 
 jobs:
   cleanup-game:

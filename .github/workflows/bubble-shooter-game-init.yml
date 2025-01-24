@@ -4,9 +4,6 @@ on:
   pull_request:
     types: [opened]
   create:
-    branches:
-      - '*'
-      - '!main'
 
 jobs:
   init-game:
@@ -19,13 +16,14 @@ jobs:
       - name: Set Up Game State
         run: |
           branch_name=$(echo $GITHUB_REF | sed 's/refs\/heads\///')
-          cp game-state-template.json game-state-${branch_name}.json
+          echo '{
+            "grid": [["-", "-", "-", "-", "-"], ["-", "-", "-", "-", "-"], ["-", "-", "-", "-", "-"]],
+            "player1_defense": 1,
+            "player2_defense": 1,
+            "next_turn": "player1",
+            "bubbles": []
+          }' > game-state-${branch_name}.json
 
       - name: Commit Game State
         run: |
-          branch_name=$(echo $GITHUB_REF | sed 's/refs\/heads\///')
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add game-state-${branch_name}.json
-          git commit -m "Initialize game state for ${branch_name}"
-          git push
+  
