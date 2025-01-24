@@ -112,6 +112,14 @@ jobs:
           # Save the message to a temporary file
           echo "$message" > ./game-state-message.md
 
+      - name: Generate Markdown Summary
+        uses: Ma11hewThomas/github-markdown-builder@v1
+        with:
+          template-file-path: './states/example.hbs'
+          json-file-path: './states/example.json'
+          summary: true
+          pull-request: true
+
       - name: Comment PR with Game State
         uses: thollander/actions-comment-pull-request@v3
         with:
