@@ -74,6 +74,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
       - name: Get Initial Game State and Post as Comment
         run: |
           # Read the game state from the file
