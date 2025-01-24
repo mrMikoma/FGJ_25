@@ -7,25 +7,8 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  extract_branch_name:
-    if: ${{ github.event.issue.pull_request }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Get Branch Name from PR ID
-        run: |
-          pr_number=${{ github.event.issue.number }}
-          BRANCH_NAME=$(gh pr view $pr_number --json headRefName -q '.headRefName')
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-          echo "Branch name extracted from PR: $BRANCH_NAME"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   process_comment:
     if: ${{ github.event.issue.pull_request }}
-    needs: extract_branch_name
     runs-on: ubuntu-latest
     steps:
       - name: Display Event Payload
@@ -33,14 +16,27 @@ jobs:
           echo "Event Payload:"
           echo "${{ toJson(github.event) }}"
 
-      - name: Display Branch Name
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Get Branch Name from PR ID
+        id: extract_branch
         run: |
-          echo "Branch Name: ${{ steps.extract-branch-name.outputs.BRANCH_NAME }}"
+          pr_number=${{ github.event.issue.number }}
+          BRANCH_NAME=$(gh pr view $pr_number --json headRefName -q '.headRefName')
+          echo "{BRANCH_NAME}={$BRANCH_NAME}" >> "$GITHUB_ENV"
+          echo "Branch name extracted from PR: $BRANCH_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug Branch Name
+        run: |
+          echo "Branch name: ${{ steps.extract_branch.outputs.BRANCH_NAME }}"
 
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.extract-branch-name.outputs.BRANCH_NAME }}
+          ref: ${{ steps.extract_branch.outputs.BRANCH_NAME }}
 
   #      - name: Validate Comment Command
   #        id: validate_command
