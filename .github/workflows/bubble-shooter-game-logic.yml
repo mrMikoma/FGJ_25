@@ -10,6 +10,9 @@ jobs:
   extract-branch-name:
     runs-on: ubuntu-latest
     steps:
+    -  name: Checkout Repository
+       uses: actions/checkout@v4
+
     - name: Get Branch Name from PR ID
       run: |
         pr_number=${{ github.event.issue.number }}
@@ -19,6 +22,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
   process-comment:
+    needs: extract-branch-name
     if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
