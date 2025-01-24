@@ -85,11 +85,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: test-37
+          ref: test-38
       - name: Create Game State Markdown
         run: |
           # Read the game state file
-          initial_game_state=$(cat ./states/game-state-test-37.json)
+          initial_game_state=$(cat ./states/game-state-test-38.json)
 
           # Extract relevant game state information
           player_1_name=$(echo $initial_game_state | jq -r '.player_1.name')
