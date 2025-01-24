@@ -31,6 +31,6 @@ jobs:
             --head ${{ github.ref_name }} \
             --title "NEW GAME STARTED!" \
             --body "🎮 **LET THE GAMES BEGIN!** 🎮\n\nPlayer 2 will start the game. 🎲\n\nGet ready to play and have fun! 🚀" \
-            --draft "false"
+            --draft "false" \
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
