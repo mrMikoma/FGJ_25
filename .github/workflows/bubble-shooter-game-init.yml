@@ -1,8 +1,6 @@
 name: Start New Game
 
 on:
-  pull_request:
-    types: [opened]
   create:
 
 jobs:
