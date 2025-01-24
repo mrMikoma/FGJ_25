@@ -12,10 +12,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Extract branch name
+        id: extract_branch
+        shell: bash
+        run: echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        
       
       - name: Remove Game State File
         run: |
-          rm -f ./game-state-${{ github.ref_name }}.json
+          rm -f ./game-state-${{ steps.extract_branch.outputs.branch_name }}.json
 
       - name: Commit Changes
         run: |
