@@ -24,7 +24,7 @@ jobs:
         run: |
           pr_number=${{ github.event.issue.number }}
           BRANCH_NAME=$(gh pr view $pr_number --json headRefName -q '.headRefName')
-          echo "{BRANCH_NAME}={$BRANCH_NAME}" >> "$GITHUB_ENV"
+          echo "{BRANCH_NAME}={$BRANCH_NAME}" >> "$GITHUB_OUTPUT"
           echo "Branch name extracted from PR: $BRANCH_NAME"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
