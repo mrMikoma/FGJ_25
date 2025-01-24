@@ -3,31 +3,38 @@ name: Process Game Logic
 on:
   issue_comment:
     types: [created]
+  pull_request:
+    types: [opened, reopened, synchronize]
 
 jobs:
+  extract-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get Branch Name from PR ID
+      run: |
+        pr_number=${{ github.event.issue.number }}
+        BRANCH_NAME=$(gh pr view $pr_number --json headRefName -q '.headRefName')
+        echo "The branch name is: $BRANCH_NAME"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
   process-comment:
     if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
-
     steps:
-      - name: Display Issue Event
+      - name: Display Event Payload
         run: |
-          echo "Issue Event: ${{ github.event.issue }}"
-          echo "Comment Event: ${{ github.event.comment }}"
+          echo "Event Payload:"
+          echo "${{ toJson(github.event) }}"
 
-      - name: Extract Branch Name with Command number
-        id: extract_branch
-        shell: bash
-        run: echo "BRANCH_NAME=${${{ github.ref }}:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+      - name: Display Branch Name
+        run: |
+          echo "Branch Name: ${{ steps.extract-branch-name.outputs.BRANCH_NAME }}"
 
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
-
-      - name: Display Branch Name
-        run: |
-          echo "Branch Name: ${{ steps.extract_branch.outputs.BRANCH_NAME }}"
+          ref: ${{ steps.extract-branch-name.outputs.BRANCH_NAME }}
 
   #      - name: Validate Comment Command
   #        id: validate_command
@@ -80,7 +87,6 @@ jobs:
     if: ${{ github.event.issue.pull_request }}
     needs: process-comment
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
