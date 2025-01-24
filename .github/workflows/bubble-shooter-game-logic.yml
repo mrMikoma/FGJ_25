@@ -18,8 +18,8 @@ jobs:
         run: |
           pr_number=${{ github.event.issue.number }}
           BRANCH_NAME=$(gh pr view $pr_number --json headRefName -q '.headRefName')
-          echo "{BRANCH_NAME}={$BRANCH_NAME}" >> "$GITHUB_OUTPUT"
-          echo "The branch name is: $BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "Branch name extracted from PR: $BRANCH_NAME"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -35,7 +35,7 @@ jobs:
 
       - name: Display Branch Name
         run: |
-          echo "Branch Name: $BRANCH_NAME"
+          echo "Branch Name: ${{ steps.extract-branch-name.outputs.BRANCH_NAME }}"
 
       - name: Checkout Repository
         uses: actions/checkout@v4
