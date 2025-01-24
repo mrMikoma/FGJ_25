@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Display Issue Event
         run: |
-          echo ${{ github.event.issue }}
+          echo "Issue Event: ${{ github.event.issue }}"
+          echo "Comment Event: ${{ github.event.comment }}"
         
       - name: Extract Branch Name with Command number
         id: extract_branch
@@ -81,15 +82,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }}
-
-      - name: Get Initial Game State and Post as Comment
+      - name: Create Game State Markdown
         run: |
-          # Read the game state from the file
-          initial_game_state=$(cat ./states/game-state-${{ github.ref_name }}.json)
+          # Read the game state file
+          initial_game_state=$(cat ./states/game-state-test-37.json)
 
           # Extract relevant game state information
           player_1_name=$(echo $initial_game_state | jq -r '.player_1.name')
@@ -109,8 +105,11 @@ jobs:
           # Prepare the formatted message
           message="### Initial Game State\n\n**Player 1**: $player_1_name (Score: $player_1_score)\n**Player 2**: $player_2_name (Score: $player_2_score)\n**Current Player**: $current_player\n\n**Game State:**\n\n\`\`\`markdown\n$game_state_markdown\`\`\`"
 
-          # Post the comment with the formatted game state
-          pr_number=$(gh pr view --json number -q ".number")
-          gh pr comment $pr_number --body "$message"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Save the message to a temporary file
+          echo "$message" > ./game-state-message.md
+
+      - name: Comment PR with Game State
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          pr-number: ${{ github.event.pull_request.number }}
+          file-path: ./game-state-message.md
