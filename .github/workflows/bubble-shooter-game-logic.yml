@@ -93,4 +93,4 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ github.event.pull_request.number }}
-          file-path: ${{ steps.generate_game_state_markdown.outputs.markdown }}
+          message: ${{ steps.generate_game_state_markdown.outputs.markdown }}
