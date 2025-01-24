@@ -25,17 +25,12 @@ jobs:
           git commit -m "Initialize a new game"
           git push --set-upstream origin ${{ github.ref_name }}
 
-      - name: Open Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: NEW GAME STARTED!
-          base: main
-          branch: ${{ github.ref_name }}
-          draft: false
-          title: NEW GAME STARTED!
-          body: |
-            🎮 **LET THE GAMES BEGIN!** 🎮
-            Get ready to play and have fun! 🚀
-
-            Player 2 will start the game. 🎲
+      - name: Create Pull Request
+        run: |
+          gh pr create --base main \
+            --head ${{ github.ref_name }} \
+            --title "NEW GAME STARTED!" \
+            --body "🎮 **LET THE GAMES BEGIN!** 🎮\n\nPlayer 2 will start the game. 🎲\n\nGet ready to play and have fun! 🚀" \
+            --draft false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
