@@ -26,6 +26,7 @@ jobs:
           git push --set-upstream origin ${{ github.ref_name }}
 
       - name: Create Pull Request
+        id: create_pr
         run: |
           gh pr create --base main \
             --head ${{ github.ref_name }} \
@@ -34,6 +35,8 @@ jobs:
               Get ready to play and have fun! 🚀\
               Player 2 will start the game. 🎲\
               "
+          echo "PR_URL=$PR_URL" >> $GITHUB_ENV
+          echo "PR_NUMBER=$(echo $PR_URL | grep -oE '[0-9]+$')" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -49,4 +52,5 @@ jobs:
       - name: Comment PR with Game State
         uses: thollander/actions-comment-pull-request@v3
         with:
+          pr-number: ${{ steps.create_pr.outputs.PR_NUMBER }}
           message: ${{ github.ref_name }}
