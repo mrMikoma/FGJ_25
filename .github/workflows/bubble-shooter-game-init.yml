@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set Up Game State
         run: |
@@ -25,9 +25,11 @@ jobs:
       - name: Open Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "NEW GAME STARTED!"
-          base: main
-          branch: ${{github.ref_name}}
+          committer: github-actions[bot]
+          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          branch: main
           title: "NEW GAME STARTED!"
           body: |
             🎮 **LET THE GAMES BEGIN!** 🎮
