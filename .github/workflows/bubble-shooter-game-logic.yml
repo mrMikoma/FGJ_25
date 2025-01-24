@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: |
-          echo A comment on PR $NUMBER
-        env:
-          NUMBER: ${{ github.event.issue.number }}
+      - name: Display Issue Event
+        run: |
+          echo ${{ github.event.issue }}
         
       - name: Extract Branch Name with Command number
         id: extract_branch
