@@ -10,12 +10,18 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Extract Branch Name
         id: extract_branch
         run: |
           echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+
+      - name: Display Branch Name
+        run: |
+          echo "Branch Name: ${{ steps.extract_branch.outputs.branch_name }}"
 
       - name: Validate Comment Command
         id: validate_command
