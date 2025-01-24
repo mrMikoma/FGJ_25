@@ -10,6 +10,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Extract branch name
+        id: extract_branch
+        shell: bash
+        run: |
+          echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
+      - name: Debug branch name
+        run: |
+          echo "Branch name is ${{ steps.extract_branch.outputs.branch_name }}"
+
       - name: Set Up Game State
         run: |
           cp ./states/game-state-template.json ./states/game-state-${{github.ref_name}}.json
