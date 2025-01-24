@@ -26,11 +26,11 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "NEW GAME STARTED!"
+          commit-message: NEW GAME STARTED!
           committer: github-actions[bot]
-          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          author: github-actions[bot]@users.noreply.github.com
           branch: main
-          title: "NEW GAME STARTED!"
+          title: NEW GAME STARTED!
           body: |
             🎮 **LET THE GAMES BEGIN!** 🎮
             Get ready to play and have fun! 🚀
