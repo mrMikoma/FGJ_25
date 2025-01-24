@@ -1,26 +1,65 @@
 name: Process Game Logic
 
 on:
-  push:
-    branches-ignore:
-      - main
+  issue_comment:
+    types: [created]
 
 jobs:
-  process-game:
+  play-game:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set Up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.10
+      - name: Extract Branch Name
+        id: extract_branch
+        run: |
+          echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+
+      - name: Validate Comment Command
+        id: validate_command
+        run: |
+          comment_body="${{ github.event.comment.body }}"
+          if [[ "$comment_body" =~ ^(shoot|move-defense)\s.* ]]; then
+            echo "is_valid=true" >> $GITHUB_ENV
+          else
+            echo "is_valid=false" >> $GITHUB_ENV
+          fi
+
+      - name: Stop if Invalid Command
+        if: env.is_valid == 'false'
+        run: |
+          echo "Invalid command. Ignoring comment."
 
       - name: Process Game Logic
-        run: python main.py
-
-      - name: Commit Updated Game State
-        if: success()
+        if: env.is_valid == 'true'
         run: |
+          # Parse the command and update the game state
+          python process_command.py "${{ github.event.comment.body }}" "./game-state-${{ env.branch_name }}.json"
+
+      - name: Commit and Push Updated Game State
+        if: env.is_valid == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add game-state-${{ env.branch_name }}.json
+          git commit -m "Updated game state after move: ${{ github.event.comment.body }}"
+          git push
+
+      - name: Respond to Player
+        if: env.is_valid == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const commentBody = `
+            🎮 **Move Processed!**
+            \nCommand: **${{ github.event.comment.body }}** 
+            \nThe game state has been updated. It's now the next player's turn! 🚀
+            `;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: commentBody
+            });

@@ -1,4 +1,4 @@
-name: Initialize Game State
+name: Start New Game
 
 on:
   pull_request:
@@ -28,9 +28,12 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           commit-message: "NEW GAME STARTED!"
+          base: main
           branch: ${{github.ref_name}}
           title: "NEW GAME STARTED!"
           body: |
             🎮 **LET THE GAMES BEGIN!** 🎮
 
             Get ready to play and have fun! 🚀
+
+            player_2 will start the game. 🎲
