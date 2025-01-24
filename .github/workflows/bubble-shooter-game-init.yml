@@ -14,12 +14,12 @@ jobs:
 
       - name: Set Up Game State
         run: |
-          cp ./states/game-state-template.json game-state-${{github.ref_name}}.json
+          cp ./states/game-state-template.json ./states/game-state-${{github.ref_name}}.json
 
       - name: Commit Game State
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add game-state-${{github.ref_name}}.json
+          git add ./states/game-state-${{github.ref_name}}.json
           git commit -m "Initialize game state"
           git push
