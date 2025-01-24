@@ -1,18 +1,9 @@
-# {{data.title}}
-
-## Details
-{{#each data.details}}
-  - {{this}}
-{{/each}}
-
 ## Game State
-**Player 1**: {{data.player_1.name}} (Score: {{data.player_1.score}})
-**Player 2**: {{data.player_2.name}} (Score: {{data.player_2.score}})
-**Current Player**: {{data.current_player}}
+**Player A**: {{data.player_a.name}} (Score: {{data.player_b.score}})
+**Player B**: {{data.player_b.name}} (Score: {{data.player_b.score}})
+**Next turn**: {{data.next_player}}
 
 ### Game Board
 {{#each data.game_state}}
 | {{#each this}}{{#if this}} {{this}} {{else}}   {{/if}} |{{/each}}
 {{/each}}
-
-Helper formatDurationHumanReadable: {{ formatDurationHumanReadable 3000 }}
