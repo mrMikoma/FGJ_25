@@ -7,7 +7,8 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  extract-branch-name:
+  extract_branch_name:
+    if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -22,9 +23,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  process-comment:
-    needs: extract-branch-name
+  process_comment:
     if: ${{ github.event.issue.pull_request }}
+    needs: extract_branch_name
     runs-on: ubuntu-latest
     steps:
       - name: Display Event Payload
@@ -34,7 +35,7 @@ jobs:
 
       - name: Display Branch Name
         run: |
-          echo "Branch Name: ${{ steps.extract-branch-name.outputs.BRANCH_NAME }}"
+          echo "Branch Name: $BRANCH_NAME"
 
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -90,7 +91,7 @@ jobs:
 
   display-game-state:
     if: ${{ github.event.issue.pull_request }}
-    needs: process-comment
+    needs: process_comment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
