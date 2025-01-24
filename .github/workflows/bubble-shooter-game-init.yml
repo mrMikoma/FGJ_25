@@ -22,16 +22,14 @@ jobs:
           git commit -m "Initialize a new game"
           git push
 
-#      - name: Open Pull Request
-#        uses: peter-evans/create-pull-request@v7
-#        with:
-#          commit-message: "NEW GAME STARTED!"
-#          base: main
-#          branch: ${{github.ref_name}}
-#          title: "NEW GAME STARTED!"
-#          body: |
-#            🎮 **LET THE GAMES BEGIN!** 🎮
-#
-#            Get ready to play and have fun! 🚀
-#
-#            player_2 will start the game. 🎲
+      - name: Open Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "NEW GAME STARTED!"
+          base: main
+          branch: ${{github.ref_name}}
+          title: "NEW GAME STARTED!"
+          body: |
+            🎮 **LET THE GAMES BEGIN!** 🎮
+            Get ready to play and have fun! 🚀
+            player_2 will start the game. 🎲
