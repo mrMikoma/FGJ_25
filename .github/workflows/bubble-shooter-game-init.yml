@@ -30,8 +30,9 @@ jobs:
           gh pr create --base main \
             --head ${{ github.ref_name }} \
             --title "NEW GAME STARTED!" \
-            --body "🎮 **LET THE GAMES BEGIN!** 🎮 \
-              Player 2 will start the game. 🎲 \
-              Get ready to play and have fun! 🚀"
+            --body "🎮 **LET THE GAMES BEGIN!** 🎮\
+              Get ready to play and have fun! 🚀\
+              Player 2 will start the game. 🎲\
+              "
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
