@@ -1,17 +1,20 @@
 {
   "player_a": {
+    "id": "a",
     "name": "Player A",
     "score": 0,
     "emoji": ":a:",
     "bubble_emoji": ":x:"
   },
   "player_b": {
+    "id": "b",
     "name": "Player B",
     "score": 0,
     "emoji": ":b:",
     "bubble_emoji": ":o:"
   },
   "next_turn": {
+    "id": "a",
     "name": "Player A",
     "emoji": ":a:"
   },

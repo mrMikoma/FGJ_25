@@ -1,7 +1,6 @@
 import json
 import sys
 import os
-import random
 
 GAME_STATE_FILE = "game_state.json"
 
@@ -18,10 +17,11 @@ def make_move(row, col):
         print("Invalid move: The selected bubble spot is already occupied.")
         return
 
-    # Get current player
-    current_player = "player_a" if game_state["next_player"]["name"] == game_state["player_a"]["name"] else "player_b"
+    # Get current player by ID (use 'id' instead of 'name')
+    current_player_id = game_state["next_turn"]["id"]
+    current_player = "player_a" if current_player_id == "a" else "player_b"
     
-    # Place the bubble for the current player
+    # Get the current player's bubble emoji
     bubble_type = game_state[current_player]["bubble_emoji"]
     game_state["game_state"][row][col] = bubble_type
 
@@ -32,71 +32,90 @@ def make_move(row, col):
     else:
         print("No match found!")
 
-    # Update the next player
-    game_state["next_player"]["name"] = game_state["player_b"]["name"] if current_player == "player_a" else game_state["player_a"]["name"]
-    game_state["next_player"]["emoji"] = game_state["player_b"]["emoji"] if current_player == "player_a" else game_state["player_a"]["emoji"]
+    # Update the next player by switching the 'id' between 'a' and 'b'
+    game_state["next_turn"] = game_state["player_b"] if current_player_id == "a" else game_state["player_a"]
 
     save_game_state(game_state)
     print("Move registered!")
     print(json.dumps(game_state, indent=4))
 
-# Check for a match-3 (or more) horizontally, vertically, and diagonally
-def check_matches(grid, row, col, bubble_type):
-    match_found = False
-
-    # Horizontal, Vertical, Diagonal checks
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)]
-    for dr, dc in directions:
-        match = [(row, col)]
-        r, c = row + dr, col + dc
-        while 0 <= r < 8 and 0 <= c < 8 and grid[r][c] == bubble_type:
-            match.append((r, c))
-            r, c = r + dr, c + dc
-        if len(match) >= 3:
-            match_found = True
-            break
-
-    return match_found
-
-# Pop bubbles by setting them to an empty space (":large_blue_circle:")
-def pop_bubbles(grid, row, col, bubble_type):
-    for r in range(8):
-        for c in range(8):
-            if grid[r][c] == bubble_type:
-                grid[r][c] = ":large_blue_circle:"  # Reset bubble spot to empty
-
 # Load game state from file
 def load_game_state():
     if not os.path.exists(GAME_STATE_FILE):
-        print("Error: Game state file not found. Starting a new game.")
-        return initialize_game_state()
+        print("Error: Game state file not found. Start a new game first.")
+        sys.exit(1)
 
     with open(GAME_STATE_FILE, "r") as f:
         return json.load(f)
-
-# Initialize a new game state
-# def initialize_game_state():
-#     # Generate an 8x8 grid with empty bubble spots
-#     game_state = {
-#         "player_a": {
-#             "name": "Player A",
-#             "score": 0,
-#             "emoji": ":a:"
-#         },
-#         "player_b": {
-#             "name": "Player B",
-#             "score": 0,
-#             "emoji": ":b:"
-#         },
-#         "next_player": "Player A",
-#         "game_state": [[":large_blue_circle:" for _ in range(8)] for _ in range(8)]
-#     }
-#     return game_state
 
 # Save game state to file
 def save_game_state(game_state):
     with open(GAME_STATE_FILE, "w") as f:
         json.dump(game_state, f, indent=4)
+
+# Function to check for matches
+def check_matches(game_state, row, col, bubble_type):
+    # Check for horizontal match
+    horizontal_count = 1
+    for i in range(col - 1, -1, -1):  # left side
+        if game_state[row][i] == bubble_type:
+            horizontal_count += 1
+        else:
+            break
+    for i in range(col + 1, 8):  # right side
+        if game_state[row][i] == bubble_type:
+            horizontal_count += 1
+        else:
+            break
+
+    # Check for vertical match
+    vertical_count = 1
+    for i in range(row - 1, -1, -1):  # up side
+        if game_state[i][col] == bubble_type:
+            vertical_count += 1
+        else:
+            break
+    for i in range(row + 1, 8):  # down side
+        if game_state[i][col] == bubble_type:
+            vertical_count += 1
+        else:
+            break
+
+    # If there are 3 or more matching bubbles, return True
+    if horizontal_count >= 3 or vertical_count >= 3:
+        return True
+    return False
+
+# Function to pop bubbles
+def pop_bubbles(game_state, row, col, bubble_type):
+    # Replace the bubble at the specified position
+    game_state[row][col] = ":red_circle:"  # Empty the popped bubble
+
+    # Pop horizontal bubbles
+    for i in range(col - 1, -1, -1):  # Left side
+        if game_state[row][i] == bubble_type:
+            game_state[row][i] = ":red_circle:"
+        else:
+            break
+    for i in range(col + 1, 8):  # Right side
+        if game_state[row][i] == bubble_type:
+            game_state[row][i] = ":red_circle:"
+        else:
+            break
+
+    # Pop vertical bubbles
+    for i in range(row - 1, -1, -1):  # Up side
+        if game_state[i][col] == bubble_type:
+            game_state[i][col] = ":red_circle:"
+        else:
+            break
+    for i in range(row + 1, 8):  # Down side
+        if game_state[i][col] == bubble_type:
+            game_state[i][col] = ":red_circle:"
+        else:
+            break
+
+    print("Bubbles popped!")
 
 # Main function to handle command-line arguments
 def main():
@@ -118,10 +137,6 @@ def main():
             make_move(row, col)
         except ValueError:
             print("Row and Column must be integers.")
-    # elif command == "start":
-    #     game_state = initialize_game_state()
-    #     save_game_state(game_state)
-    #     print("New game started!")
     else:
         print(f"Unknown command: {command}")
 
