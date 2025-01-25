@@ -8,5 +8,5 @@
 |   |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |
 |---|-----|-----|-----|-----|-----|-----|-----|-----|
 {{#each data.game_state}}
-| {{~ String.fromCharCode 65 (add @index 0) ~}} | {{#each this}}{{#if this}} {{this}} {{else}}     {{/if}} |{{/each}}
+| {{~ (char @index) ~}} | {{#each this}}{{#if this}} {{this}} {{else}}     {{/if}} |{{/each}}
 {{/each}}
