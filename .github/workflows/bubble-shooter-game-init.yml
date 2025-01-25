@@ -33,7 +33,7 @@ jobs:
             --title "NEW GAME STARTED!" \
             --body "🎮 **LET THE GAMES BEGIN!** 🎮\
               Get ready to play and have fun! 🚀\
-              Player 2 will start the game. 🎲\
+              First comment will be made by Player A 🎲\
               "
           echo "PR_URL=$PR_URL" >> $GITHUB_ENV
           echo "PR_NUMBER=$(echo $PR_URL | grep -oE '[0-9]+$')" >> $GITHUB_OUTPUT

@@ -1,11 +1,13 @@
 {
   "player_a": {
     "name": "Player A",
-    "score": 0
+    "score": 0,
+    "emoji": ":a:"
   },
   "player_b": {
     "name": "Player B",
-    "score": 0
+    "score": 0,
+    "emoji": ":b:"
   },
   "next_player": "First comment will be made by Player A",
   "row_labels": ["A", "B", "C", "D", "E", "F", "G", "H"],
