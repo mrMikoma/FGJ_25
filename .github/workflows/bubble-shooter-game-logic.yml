@@ -56,27 +56,27 @@ jobs:
 
             echo "Moving to row $ROW (original: $ROW_LETTER), col $COL"
 
-            # mv ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json game_state.json
+            mv ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json game_state.json
 
             # Debug current directory
             echo "Current directory: $(pwd)"
 
-            # # Run Python script with the correct path
-            # if [ -f src/bubble_pop_game.py ]; then
-            #   python bubble_pop_game.py move $ROW $COL || echo "Python script error" >> error.log
-            #   if [ -f error.log ]; then
-            #     echo "Error occurred during Python script execution"
-            #     exit 1
-            #   else
-            #     mv game_state.json ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
-            #   fi
-            # else
-            #   echo "Error: src/bubble_pop_game.py not found!"
-            #   exit 1
-            # fi
-            #   else
-            # echo "Invalid move command. Please use: move <row> <column>"
-            # exit 1
+            # Run Python script with the correct path
+            if [ -f src/bubble_pop_game.py ]; then
+              python bubble_pop_game.py move $ROW $COL || echo "Python script error" >> error.log
+              if [ -f error.log ]; then
+                echo "Error occurred during Python script execution"
+                exit 1
+              else
+                mv game_state.json ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
+              fi
+            else
+              echo "Error: src/bubble_pop_game.py not found!"
+              exit 1
+            fi
+              else
+            echo "Invalid move command. Please use: move <row> <column>"
+            exit 1
           fi
 
       - name: Comment on PR with Error
