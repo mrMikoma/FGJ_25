@@ -153,9 +153,9 @@ jobs:
           echo "Player B: $PLAYER_B_NAME, Score: $PLAYER_B_SCORE"
 
           # Check if a player has reached 10 points
-          if [ "$PLAYER_A_SCORE" -ge 3 ]; then
+          if [ "$PLAYER_A_SCORE" -ge 10 ]; then
             WINNER="$PLAYER_A_NAME"
-          elif [ "$PLAYER_B_SCORE" -ge 3 ]; then
+          elif [ "$PLAYER_B_SCORE" -ge 10 ]; then
             WINNER="$PLAYER_B_NAME"
           else
             WINNER=""
