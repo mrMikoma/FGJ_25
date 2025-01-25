@@ -45,7 +45,8 @@ jobs:
       - name: Process Comment for Move Command
         if: ${{ github.event.comment.body }}
         run: |
-          if [[ $COMMENT =~ ^move\ ([A-Za-z])\ ([0-9]+)$ ]]; then
+          echo "Processing comment: ${{ github.event.comment.body }}"
+          if [[ ${{ github.event.comment.body }} =~ ^move\ ([A-Za-z])\ ([0-9]+)$ ]]; then
             # Extract row letter and column number from the comment
             ROW_LETTER=${BASH_REMATCH[1]}
             COL=${BASH_REMATCH[2]}
