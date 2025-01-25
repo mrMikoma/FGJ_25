@@ -70,10 +70,13 @@ jobs:
             fi
           fi
       
-      # - name: Remove User Comment
-      #   if: ${{ github.event.comment.body }}
-      #   run: |
-      #     gh issue comment delete ${{ github.event.comment.id }}
+      - name: Remove User Comment after Processing
+        if: ${{ github.event.comment }}
+        run: |
+          echo "Removing user comment"
+          gh api -X DELETE /repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Comment on PR with Error
         if: failure()
