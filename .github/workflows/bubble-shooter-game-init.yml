@@ -52,4 +52,4 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ steps.create_pr.outputs.PR_NUMBER }}
-          message: ${{ github.ref_name }}
+          message: ${{ steps.generate_game_state_markdown.outputs.markdown }}

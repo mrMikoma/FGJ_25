@@ -59,12 +59,8 @@ jobs:
 
             echo "Moving to row $ROW (original: $ROW_LETTER), col $COL"
 
-            mv ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json game_state.json
-
-            # Debug current directory
-            echo "Current directory: $(pwd)"
-
             # Run Python game logic script
+            mv ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json game_state.json
             python bubble_pop_game.py move $ROW $COL || echo "Python script error" >> error.log
             if [ -f error.log ]; then
               echo "Error occurred during Python script execution"

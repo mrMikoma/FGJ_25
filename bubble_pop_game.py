@@ -19,7 +19,7 @@ def make_move(row, col):
 
     # Update the game state
     current_player = "player_a" if game_state["next_player"] == game_state["player_a"]["name"] else "player_b"
-    game_state["game_state"][row][col] = ":boom:"  # Pop the bubble
+    game_state["game_state"][row][col] = game_state[current_player]["emoji"]
     game_state[current_player]["score"] += 1  # Increment player's score
     game_state["next_player"] = game_state["player_b"]["name"] if current_player == "player_a" else game_state["player_a"]["name"]
 
