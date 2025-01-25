@@ -47,7 +47,6 @@ jobs:
           template-file-path: "./states/game-state.hbs"
           json-file-path: "./states/game-state-${{ github.ref_name }}.json"
           summary: true
-          pull-request: true
 
       - name: Comment PR with Game State
         uses: thollander/actions-comment-pull-request@v3
