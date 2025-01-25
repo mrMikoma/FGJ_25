@@ -8,6 +8,7 @@
     "score": 0
   },
   "next_player": "First comment will be made by Player A",
+  "row_labels": ["A", "B", "C", "D", "E", "F", "G", "H"],
   "game_state": [
     [
       ":large_blue_circle:",
