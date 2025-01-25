@@ -58,3 +58,4 @@ jobs:
         with:
           pr-number: ${{ steps.create_pr.outputs.PR_NUMBER }}
           message: ${{ steps.generate_game_state_markdown.outputs.markdown }}
+          comment-tag: game-state
