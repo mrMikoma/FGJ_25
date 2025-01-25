@@ -140,6 +140,32 @@ jobs:
           git add ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
           git commit -m "Update game state"
           git push origin ${{ steps.extract_branch.outputs.BRANCH_NAME }}
+        
+      - name: Update PR Title
+        run: |
+          # Load the current game state
+          GAME_STATE_FILE="./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json"
+          
+          if [ ! -f "$GAME_STATE_FILE" ]; then
+            echo "Game state file not found. Cannot update PR title."
+            exit 1
+          fi
+          
+          # Extract player names and scores from the game state
+          PLAYER_A_NAME=$(jq -r '.player_a.name' $GAME_STATE_FILE)
+          PLAYER_A_SCORE=$(jq -r '.player_a.score' $GAME_STATE_FILE)
+          PLAYER_B_NAME=$(jq -r '.player_b.name' $GAME_STATE_FILE)
+          PLAYER_B_SCORE=$(jq -r '.player_b.score' $GAME_STATE_FILE)
+          
+          # Construct the new title with names and scores
+          NEW_TITLE="Active game: $PLAYER_A_NAME ($PLAYER_A_SCORE) vs $PLAYER_B_NAME ($PLAYER_B_SCORE)"
+          
+          echo "Updating PR title to: $NEW_TITLE"
+          
+          # Update the PR title using gh pr edit
+          gh pr edit --title "$NEW_TITLE"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate Markdown Game State
         if: success()
