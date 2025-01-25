@@ -1,104 +1,115 @@
 {
-  "player_a": {
-    "id": "a",
-    "name": "Player A",
-    "score": 0,
-    "emoji": ":a:",
-    "bubble_emoji": ":x:"
-  },
-  "player_b": {
-    "id": "b",
-    "name": "Player B",
-    "score": 0,
-    "emoji": ":b:",
-    "bubble_emoji": ":o:"
-  },
-  "next_turn": {
-    "id": "a",
-    "name": "Player A",
-    "emoji": ":a:"
-  },
-  "row_labels": ["A", "B", "C", "D", "E", "F", "G", "H"],
-  "game_state": [
-    [
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:"
+    "player_a": {
+        "id": "a",
+        "name": "Player A",
+        "score": 0,
+        "emoji": ":a:",
+        "bubble_emoji": ":x:"
+    },
+    "player_b": {
+        "id": "b",
+        "name": "Player B",
+        "score": 0,
+        "emoji": ":b:",
+        "bubble_emoji": ":o:"
+    },
+    "next_turn": {
+        "id": "b",
+        "name": "Player B",
+        "score": 0,
+        "emoji": ":b:",
+        "bubble_emoji": ":o:"
+    },
+    "row_labels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H"
     ],
-    [
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:"
-    ],
-    [
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:"
-    ],
-    [
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:"
-    ],
-    [
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:"
-    ],
-    [
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:"
-    ],
-    [
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:"
-    ],
-    [
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:",
-      ":large_blue_circle:"
+    "game_state": [
+        [
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:"
+        ],
+        [
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:"
+        ],
+        [
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:"
+        ],
+        [
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":x:",
+            ":large_blue_circle:"
+        ],
+        [
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:"
+        ],
+        [
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:"
+        ],
+        [
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:"
+        ],
+        [
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:",
+            ":large_blue_circle:"
+        ]
     ]
-  ]
 }
