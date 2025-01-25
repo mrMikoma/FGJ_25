@@ -27,6 +27,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.extract_branch.outputs.BRANCH_NAME }}
+
       - name: Assign Players Based on Comment Author
         id: assign_players
         run: |
@@ -70,11 +75,6 @@ jobs:
           echo "Player detected or assigned: $PLAYER"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.extract_branch.outputs.BRANCH_NAME }}
 
       - name: Install Python
         uses: actions/setup-python@v5
