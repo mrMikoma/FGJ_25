@@ -14,11 +14,11 @@
         "bubble_emoji": ":o:"
     },
     "next_turn": {
-        "id": "b",
-        "name": "Apezkin",
-        "score": 6,
-        "emoji": ":b:",
-        "bubble_emoji": ":o:"
+        "id": "a",
+        "name": "mrMikoma",
+        "score": 7,
+        "emoji": ":a:",
+        "bubble_emoji": ":x:"
     },
     "row_labels": [
         "A",
@@ -58,7 +58,7 @@
             ":a:",
             ":large_blue_circle:",
             ":o:",
-            ":large_blue_circle:",
+            ":o:",
             ":large_blue_circle:"
         ],
         [
