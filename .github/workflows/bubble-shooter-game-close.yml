@@ -3,7 +3,6 @@ name: Clean Up Game State
 on:
   pull_request:
     types: [closed]
-  delete:
 
 jobs:
   cleanup-game:
@@ -16,16 +15,14 @@ jobs:
       - name: Extract branch name
         id: extract_branch_name
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            BRANCH_NAME=$(gh pr view ${{ github.event.number }} --json headRefName -q '.headRefName')
-          else
-            BRANCH_NAME=${{ github.ref_name }}
-          fi
-          echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
-        
+          BRANCH_NAME=$(gh pr view ${{ github.event.number }} --json headRefName -q '.headRefName')
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Remove Game State File
         run: |
-          rm -f ./game-state-${{ steps.extract_branch_name.outputs.branch_name }}.json
+          rm -f ./game-state-${{ steps.extract_branch_name.outputs.BRANCH_NAME }}.json
 
       - name: Commit Changes
         run: |
@@ -34,4 +31,3 @@ jobs:
           git add -u
           git commit -m "Clean up game state"
           git push
-  
