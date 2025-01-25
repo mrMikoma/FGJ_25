@@ -14,13 +14,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Extract branch name
-        id: extract_branch
-        shell: bash
-        run: echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch_name
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BRANCH_NAME=$(gh pr view ${{ github.event.number }} --json headRefName -q '.headRefName')
+          else
+            BRANCH_NAME=${{ github.ref_name }}
+          fi
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
         
       - name: Remove Game State File
         run: |
-          rm -f ./game-state-${{ steps.extract_branch.outputs.branch_name }}.json
+          rm -f ./game-state-${{ steps.extract_branch_name.outputs.branch_name }}.json
 
       - name: Commit Changes
         run: |

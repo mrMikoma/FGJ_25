@@ -51,7 +51,7 @@ jobs:
             if [[ "$COMMENT" =~ ^move\ ([A-Za-z])\ ([0-9]+)$ ]]; then
             # Extract row letter and column number from the comment
             ROW_LETTER=${BASH_REMATCH[1]}           # Extract row letter
-            COL=$((${BASH_REMATCH[2]}-1))           # Convert to zero-based index
+            COL=${BASH_REMATCH[2]}           
 
             # Convert the row letter (A-Z or a-z) to a zero-based index
             ROW=$(printf "%d" "'${ROW_LETTER^^}")   # Convert to uppercase
