@@ -2,7 +2,7 @@
     "player_a": {
         "id": "a",
         "name": "mrMikoma",
-        "score": 3,
+        "score": 7,
         "emoji": ":a:",
         "bubble_emoji": ":x:"
     },
@@ -14,11 +14,11 @@
         "bubble_emoji": ":o:"
     },
     "next_turn": {
-        "id": "a",
-        "name": "mrMikoma",
-        "score": 3,
-        "emoji": ":a:",
-        "bubble_emoji": ":x:"
+        "id": "b",
+        "name": "Apezkin",
+        "score": 6,
+        "emoji": ":b:",
+        "bubble_emoji": ":o:"
     },
     "row_labels": [
         "A",
@@ -43,7 +43,7 @@
         ],
         [
             ":large_blue_circle:",
-            ":x:",
+            ":a:",
             ":b:",
             ":large_blue_circle:",
             ":large_blue_circle:",
@@ -53,7 +53,7 @@
         ],
         [
             ":large_blue_circle:",
-            ":x:",
+            ":a:",
             ":b:",
             ":a:",
             ":large_blue_circle:",
@@ -63,8 +63,8 @@
         ],
         [
             ":large_blue_circle:",
-            ":large_blue_circle:",
-            ":x:",
+            ":a:",
+            ":a:",
             ":a:",
             ":large_blue_circle:",
             ":large_blue_circle:",
