@@ -6,10 +6,10 @@
     },
     "player_b": {
         "name": "Player B",
-        "score": 1,
+        "score": 2,
         "emoji": ":b:"
     },
-    "next_player": "Player B",
+    "next_player": "Player A",
     "row_labels": [
         "A",
         "B",
@@ -34,7 +34,7 @@
         [
             ":large_blue_circle:",
             ":large_blue_circle:",
-            ":large_blue_circle:",
+            ":b:",
             ":large_blue_circle:",
             ":large_blue_circle:",
             ":large_blue_circle:",
