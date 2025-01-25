@@ -32,19 +32,19 @@ jobs:
         run: |
           COMMENT_AUTHOR="${{ github.event.comment.user.login }}"
           echo "Comment author: $COMMENT_AUTHOR"
-      
+
           # Load the game state
           GAME_STATE_FILE="./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json"
-          
+
           if [ ! -f "$GAME_STATE_FILE" ]; then
             echo "Game state file not found. Please initialize the game first."
             exit 1
           fi
-      
+
           # Extract current player assignments
           PLAYER_A_NAME=$(jq -r '.player_a.name' $GAME_STATE_FILE)
           PLAYER_B_NAME=$(jq -r '.player_b.name' $GAME_STATE_FILE)
-      
+
           # Assign the comment author to the first available player slot
           if [ "$PLAYER_A_NAME" == "Player A" ]; then
             echo "Assigning $COMMENT_AUTHOR as player_a"
@@ -65,7 +65,7 @@ jobs:
               exit 1
             fi
           fi
-      
+
           echo "PLAYER=$PLAYER" >> $GITHUB_OUTPUT
           echo "Player detected or assigned: $PLAYER"
         env:
@@ -75,11 +75,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      #      - name: Install Dependencies
-      #        run: |
-      #          python -m pip install --upgrade pip
-      #          pip install -r requirements.txt
 
       - name: Process Comment for Move Command
         if: ${{ github.event.comment.body }}
@@ -135,30 +130,56 @@ jobs:
           git add ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
           git commit -m "Update game state"
           git push origin ${{ steps.extract_branch.outputs.BRANCH_NAME }}
-        
-      - name: Update PR Title
+
+      - name: Check for Winner and Update PR Title
         run: |
           # Load the current game state
           GAME_STATE_FILE="./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json"
           
           if [ ! -f "$GAME_STATE_FILE" ]; then
-            echo "Game state file not found. Cannot update PR title."
+            echo "Game state file not found. Cannot proceed."
             exit 1
           fi
           
-          # Extract player names and scores from the game state
+          # Extract player names and scores
           PLAYER_A_NAME=$(jq -r '.player_a.name' $GAME_STATE_FILE)
           PLAYER_A_SCORE=$(jq -r '.player_a.score' $GAME_STATE_FILE)
           PLAYER_B_NAME=$(jq -r '.player_b.name' $GAME_STATE_FILE)
           PLAYER_B_SCORE=$(jq -r '.player_b.score' $GAME_STATE_FILE)
           
-          # Construct the new title with names and scores
-          NEW_TITLE="Active game: $PLAYER_A_NAME ($PLAYER_A_SCORE) vs $PLAYER_B_NAME ($PLAYER_B_SCORE)"
+          echo "Player A: $PLAYER_A_NAME, Score: $PLAYER_A_SCORE"
+          echo "Player B: $PLAYER_B_NAME, Score: $PLAYER_B_SCORE"
           
-          echo "Updating PR title to: $NEW_TITLE"
+          # Check if a player has reached 10 points
+          if [ "$PLAYER_A_SCORE" -ge 10 ]; then
+            WINNER="$PLAYER_A_NAME"
+          elif [ "$PLAYER_B_SCORE" -ge 10 ]; then
+            WINNER="$PLAYER_B_NAME"
+          else
+            WINNER=""
+          fi
           
-          # Update the PR title using gh pr edit
-          gh pr edit --title "$NEW_TITLE"
+          if [ -n "$WINNER" ]; then
+            echo "We have a winner: $WINNER"
+            
+            # Update the game state to mark the winner
+            jq --arg winner "$WINNER" '.winner = $winner' $GAME_STATE_FILE > tmp.json && mv tmp.json $GAME_STATE_FILE
+            
+            # Update the PR title to reflect the winner
+            NEW_TITLE="Game Over: $WINNER wins versus $PLAYER_B_NAME!"
+            echo "Updating PR title to: $NEW_TITLE"
+            gh pr edit --title "$NEW_TITLE"
+            
+            # Add a comment to the PR to declare the winner
+            gh pr comment --body "🎉 Congratulations! $WINNER has won the game with a score of 10!"
+            
+            exit 0
+          else
+            # Construct the active game title with names and scores
+            NEW_TITLE="Active game: $PLAYER_A_NAME ($PLAYER_A_SCORE) vs $PLAYER_B_NAME ($PLAYER_B_SCORE)"
+            echo "Updating PR title to: $NEW_TITLE"
+            gh pr edit --title "$NEW_TITLE"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
