@@ -35,9 +35,11 @@ jobs:
               Get ready to play and have fun! 🚀\
               First comment will be made by Player A 🎲\
               "
-          echo "PR_URL=$PR_URL" >> $GITHUB_ENV
+          # Get the PR URL and PR number
+          PR_URL=$(gh pr view --json url -q '.url')
+          PR_NUMBER=$(gh pr view --json number -q '.number')
           echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
-          echo "PR_NUMBER=$(echo $PR_URL | grep -oE '[0-9]+$')" >> $GITHUB_OUTPUT
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
