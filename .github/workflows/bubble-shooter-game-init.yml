@@ -35,10 +35,8 @@ jobs:
               Get ready to play and have fun! 🚀\
               First comment will be made by Player A 🎲\
               "
-          # Get the PR URL and PR number
-          PR_URL=$(gh pr view --json url -q '.url')
+          # Get the PR number
           PR_NUMBER=$(gh pr view --json number -q '.number')
-          echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,12 +51,10 @@ jobs:
 
       - name: Debug PR URL
         run: |
-          echo "PR URL: ${{ steps.create_pr.outputs.PR_URL }}"
           echo "PR Number: ${{ steps.create_pr.outputs.PR_NUMBER }}"
 
       - name: Comment PR with Game State
         uses: thollander/actions-comment-pull-request@v3
         with:
+          pr-number: ${{ steps.create_pr.outputs.PR_NUMBER }}
           message: ${{ steps.generate_game_state_markdown.outputs.markdown }}
-        env:
-          PR_URL: ${{ steps.create_pr.outputs.PR_URL }}
