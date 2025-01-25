@@ -1,7 +1,7 @@
 {
     "player_a": {
         "name": "Player A",
-        "score": 1,
+        "score": 2,
         "emoji": ":a:"
     },
     "player_b": {
@@ -9,7 +9,7 @@
         "score": 2,
         "emoji": ":b:"
     },
-    "next_player": "Player A",
+    "next_player": "Player B",
     "row_labels": [
         "A",
         "B",
@@ -35,7 +35,7 @@
             ":large_blue_circle:",
             ":large_blue_circle:",
             ":b:",
-            ":large_blue_circle:",
+            ":a:",
             ":large_blue_circle:",
             ":large_blue_circle:",
             ":large_blue_circle:",
