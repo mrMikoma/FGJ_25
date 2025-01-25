@@ -36,6 +36,7 @@ jobs:
               First comment will be made by Player A 🎲\
               "
           echo "PR_URL=$PR_URL" >> $GITHUB_ENV
+          echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
           echo "PR_NUMBER=$(echo $PR_URL | grep -oE '[0-9]+$')" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,3 +54,5 @@ jobs:
         with:
           pr-number: ${{ steps.create_pr.outputs.PR_NUMBER }}
           message: ${{ steps.generate_game_state_markdown.outputs.markdown }}
+        env:
+          PR_URL: ${{ steps.create_pr.outputs.PR_URL }}

@@ -69,6 +69,11 @@ jobs:
               mv game_state.json ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
             fi
           fi
+      
+      # - name: Remove User Comment
+      #   if: ${{ github.event.comment.body }}
+      #   run: |
+      #     gh issue comment delete ${{ github.event.comment.id }}
 
       - name: Comment on PR with Error
         if: failure()
@@ -100,4 +105,5 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ github.event.pull_request.number }}
+          comment-tag: execution
           message: ${{ steps.generate_game_state_markdown.outputs.markdown }}
