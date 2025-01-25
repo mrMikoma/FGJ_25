@@ -27,7 +27,7 @@ def make_move(row, col):
 
     # Check for matches after the move
     if check_matches(game_state["game_state"], row, col, bubble_type):
-        popped_count = pop_bubbles(game_state["game_state"], row, col, bubble_type)
+        popped_count = pop_bubbles(game_state["game_state"], row, col, bubble_type, game_state[current_player]["emoji"])
         game_state[current_player]["score"] += popped_count
     else:
         print("No match found!")
@@ -87,23 +87,23 @@ def check_matches(game_state, row, col, bubble_type):
     return False
 
 # Function to pop bubbles
-def pop_bubbles(game_state, row, col, bubble_type):
+def pop_bubbles(game_state, row, col, bubble_type, player_emoji):
     # Track the number of bubbles popped
     popped_count = 1  # Start with the initial bubble
 
     # Replace the bubble at the specified position
-    game_state[row][col] = ":large_blue_circle:"  # Empty the popped bubble
+    game_state[row][col] = player_emoji  # Empty the popped bubble
 
     # Pop horizontal bubbles
     for i in range(col - 1, -1, -1):  # Left side
         if game_state[row][i] == bubble_type:
-            game_state[row][i] = ":large_blue_circle:"
+            game_state[row][i] = player_emoji
             popped_count += 1
         else:
             break
     for i in range(col + 1, 8):  # Right side
         if game_state[row][i] == bubble_type:
-            game_state[row][i] = ":large_blue_circle:"
+            game_state[row][i] = player_emoji
             popped_count += 1
         else:
             break
@@ -111,13 +111,13 @@ def pop_bubbles(game_state, row, col, bubble_type):
     # Pop vertical bubbles
     for i in range(row - 1, -1, -1):  # Up side
         if game_state[i][col] == bubble_type:
-            game_state[i][col] = ":large_blue_circle:"
+            game_state[i][col] = player_emoji
             popped_count += 1
         else:
             break
     for i in range(row + 1, 8):  # Down side
         if game_state[i][col] == bubble_type:
-            game_state[i][col] = ":large_blue_circle:"
+            game_state[i][col] = player_emoji
             popped_count += 1
         else:
             break
