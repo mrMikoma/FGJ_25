@@ -1,13 +1,13 @@
 ## Game State
 
-**Player **{{data.player_a.emoji}}:  {{data.player_a.name}} (Score: {{data.player_a.score}})
-**Player **{{data.player_b.emoji}}:  {{data.player_b.name}} (Score: {{data.player_b.score}})
-**Next turn**: {{data.next_turn.emoji}}: {{data.next_turn.name}}
+**Player **<span style="color: blue;">{{data.player_a.emoji}}:  {{data.player_a.name}}</span> (Score: <span style="color: green;">{{data.player_a.score}}</span>)
+**Player **<span style="color: red;">{{data.player_b.emoji}}:  {{data.player_b.name}}</span> (Score: <span style="color: green;">{{data.player_b.score}}</span>)
+**Next turn**: <span style="color: purple;">{{data.next_turn.emoji}}: {{data.next_turn.name}}</span>
 
 ### Game Board
 
 |   |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |
 |---|-----|-----|-----|-----|-----|-----|-----|-----|
 {{#each data.game_state}}
-| {{lookup ../data.row_labels @index}} | {{#each this}} {{this}} |{{/each}}
+| {{lookup ../data.row_labels @index}} | {{#each this}} <span style="color: orange;">{{this}}</span> |{{/each}}
 {{/each}}
