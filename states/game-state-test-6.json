@@ -9,16 +9,16 @@
     "player_b": {
         "id": "b",
         "name": "Player B",
-        "score": 0,
+        "score": 3,
         "emoji": ":b:",
         "bubble_emoji": ":o:"
     },
     "next_turn": {
-        "id": "b",
-        "name": "Player B",
-        "score": 0,
-        "emoji": ":b:",
-        "bubble_emoji": ":o:"
+        "id": "a",
+        "name": "Player A",
+        "score": 3,
+        "emoji": ":a:",
+        "bubble_emoji": ":x:"
     },
     "row_labels": [
         "A",
@@ -32,9 +32,9 @@
     ],
     "game_state": [
         [
-            ":o:",
-            ":o:",
-            ":large_blue_circle:",
+            ":b:",
+            ":b:",
+            ":b:",
             ":large_blue_circle:",
             ":large_blue_circle:",
             ":large_blue_circle:",
