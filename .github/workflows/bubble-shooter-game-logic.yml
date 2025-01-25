@@ -27,12 +27,47 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get Comment Author
-        id: extract_comment_author
+      - name: Assign Players Based on Comment Author
+        id: assign_players
         run: |
           COMMENT_AUTHOR="${{ github.event.comment.user.login }}"
-          echo "COMMENT_AUTHOR=$COMMENT_AUTHOR" >> $GITHUB_OUTPUT
           echo "Comment author: $COMMENT_AUTHOR"
+      
+          # Load the game state
+          GAME_STATE_FILE="./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json"
+          
+          if [ ! -f "$GAME_STATE_FILE" ]; then
+            echo "Game state file not found. Please initialize the game first."
+            exit 1
+          fi
+      
+          # Extract current player assignments
+          PLAYER_A_NAME=$(jq -r '.player_a.name' $GAME_STATE_FILE)
+          PLAYER_B_NAME=$(jq -r '.player_b.name' $GAME_STATE_FILE)
+      
+          # Assign the comment author to the first available player slot
+          if [ "$PLAYER_A_NAME" == "Player A" ]; then
+            echo "Assigning $COMMENT_AUTHOR as player_a"
+            jq --arg name "$COMMENT_AUTHOR" '.player_a.name = $name' $GAME_STATE_FILE > tmp.json && mv tmp.json $GAME_STATE_FILE
+            PLAYER="player_a"
+          elif [ "$PLAYER_B_NAME" == "Player B" ]; then
+            echo "Assigning $COMMENT_AUTHOR as player_b"
+            jq --arg name "$COMMENT_AUTHOR" '.player_b.name = $name' $GAME_STATE_FILE > tmp.json && mv tmp.json $GAME_STATE_FILE
+            PLAYER="player_b"
+          else
+            echo "Both players are already assigned. No changes made."
+            if [ "$COMMENT_AUTHOR" == "$PLAYER_A_NAME" ]; then
+              PLAYER="player_a"
+            elif [ "$COMMENT_AUTHOR" == "$PLAYER_B_NAME" ]; then
+              PLAYER="player_b"
+            else
+              echo "Comment author is not a recognized player."
+              exit 1
+            fi
+          fi
+      
+          echo "PLAYER=$PLAYER" >> $GITHUB_OUTPUT
+          echo "Player detected or assigned: $PLAYER"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
