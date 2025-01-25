@@ -151,9 +151,9 @@ jobs:
           echo "Player B: $PLAYER_B_NAME, Score: $PLAYER_B_SCORE"
           
           # Check if a player has reached 10 points
-          if [ "$PLAYER_A_SCORE" -ge 10 ]; then
+          if [ "$PLAYER_A_SCORE" -ge 3 ]; then
             WINNER="$PLAYER_A_NAME"
-          elif [ "$PLAYER_B_SCORE" -ge 10 ]; then
+          elif [ "$PLAYER_B_SCORE" -ge 3 ]; then
             WINNER="$PLAYER_B_NAME"
           else
             WINNER=""
@@ -172,13 +172,14 @@ jobs:
             
             # Add a comment to the PR to declare the winner
             gh pr comment --body "🎉 Congratulations! $WINNER has won the game with a score of 10!"
-            
+            gh pr lock --lock-reason "Game Over"
             exit 0
           else
             # Construct the active game title with names and scores
             NEW_TITLE="Active game: $PLAYER_A_NAME ($PLAYER_A_SCORE) vs $PLAYER_B_NAME ($PLAYER_B_SCORE)"
             echo "Updating PR title to: $NEW_TITLE"
             gh pr edit --title "$NEW_TITLE"
+            
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
