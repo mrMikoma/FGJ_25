@@ -2,7 +2,7 @@
     "player_a": {
         "id": "a",
         "name": "Player A",
-        "score": 3,
+        "score": 6,
         "emoji": ":a:",
         "bubble_emoji": ":x:"
     },
@@ -14,11 +14,11 @@
         "bubble_emoji": ":o:"
     },
     "next_turn": {
-        "id": "a",
-        "name": "Player A",
+        "id": "b",
+        "name": "Player B",
         "score": 3,
-        "emoji": ":a:",
-        "bubble_emoji": ":x:"
+        "emoji": ":b:",
+        "bubble_emoji": ":o:"
     },
     "row_labels": [
         "A",
@@ -62,9 +62,9 @@
             ":large_blue_circle:"
         ],
         [
-            ":large_blue_circle:",
-            ":x:",
-            ":x:",
+            ":a:",
+            ":a:",
+            ":a:",
             ":o:",
             ":large_blue_circle:",
             ":large_blue_circle:",
