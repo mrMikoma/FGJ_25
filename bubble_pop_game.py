@@ -27,8 +27,8 @@ def make_move(row, col):
 
     # Check for matches after the move
     if check_matches(game_state["game_state"], row, col, bubble_type):
-        pop_bubbles(game_state["game_state"], row, col, bubble_type)
-        game_state[current_player]["score"] += 1  # Increment player's score
+        popped_count = pop_bubbles(game_state["game_state"], row, col, bubble_type)
+        game_state[current_player]["score"] += popped_count
     else:
         print("No match found!")
 
@@ -88,34 +88,42 @@ def check_matches(game_state, row, col, bubble_type):
 
 # Function to pop bubbles
 def pop_bubbles(game_state, row, col, bubble_type):
+    # Track the number of bubbles popped
+    popped_count = 1  # Start with the initial bubble
+
     # Replace the bubble at the specified position
-    game_state[row][col] = ":red_circle:"  # Empty the popped bubble
+    game_state[row][col] = ":large_blue_circle:"  # Empty the popped bubble
 
     # Pop horizontal bubbles
     for i in range(col - 1, -1, -1):  # Left side
         if game_state[row][i] == bubble_type:
-            game_state[row][i] = ":red_circle:"
+            game_state[row][i] = ":large_blue_circle:"
+            popped_count += 1
         else:
             break
     for i in range(col + 1, 8):  # Right side
         if game_state[row][i] == bubble_type:
-            game_state[row][i] = ":red_circle:"
+            game_state[row][i] = ":large_blue_circle:"
+            popped_count += 1
         else:
             break
 
     # Pop vertical bubbles
     for i in range(row - 1, -1, -1):  # Up side
         if game_state[i][col] == bubble_type:
-            game_state[i][col] = ":red_circle:"
+            game_state[i][col] = ":large_blue_circle:"
+            popped_count += 1
         else:
             break
     for i in range(row + 1, 8):  # Down side
         if game_state[i][col] == bubble_type:
-            game_state[i][col] = ":red_circle:"
+            game_state[i][col] = ":large_blue_circle:"
+            popped_count += 1
         else:
             break
 
-    print("Bubbles popped!")
+    print(f"Bubbles popped: {popped_count}")
+    return popped_count
 
 # Main function to handle command-line arguments
 def main():
