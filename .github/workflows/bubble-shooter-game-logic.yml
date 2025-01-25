@@ -9,11 +9,6 @@ jobs:
     if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
-      - name: Display Event Payload
-        run: |
-          echo "Event Payload:"
-          echo "${{ toJson(github.event) }}"
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
