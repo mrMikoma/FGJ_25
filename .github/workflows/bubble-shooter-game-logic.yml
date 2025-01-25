@@ -30,7 +30,7 @@ jobs:
       - name: Get Comment Author
         id: extract_comment_author
         run: |
-          COMMENT_AUTHOR=$(gh api /users/${{ github.event.comment.user.login }} --json login -q '.login')
+          COMMENT_AUTHOR="${{ github.event.comment.user.login }}"
           echo "COMMENT_AUTHOR=$COMMENT_AUTHOR" >> $GITHUB_OUTPUT
           echo "Comment author: $COMMENT_AUTHOR"
         env:
