@@ -46,7 +46,8 @@ jobs:
         if: ${{ github.event.comment.body }}
         run: |
           echo "Processing comment: ${{ github.event.comment.body }}"
-          COMMENT=${{ github.event.comment.body }}
+          COMMENT="${{ github.event.comment.body }}"
+          echo "Comment: $COMMENT"
           if [[ "$COMMENT" =~ ^move\ ([A-Za-z])\ ([0-9]+)$ ]]; then
             # Extract row letter and column number from the comment
             ROW_LETTER=${BASH_REMATCH[1]}
