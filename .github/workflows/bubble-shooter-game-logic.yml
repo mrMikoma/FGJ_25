@@ -42,50 +42,70 @@ jobs:
       #          python -m pip install --upgrade pip
       #          pip install -r requirements.txt
 
-      - name: Process Comment Commands
+      - name: Process Comment for Move Command
         if: ${{ github.event.comment.body }}
         run: |
-          if [[ $COMMENT =~ ^move\ ([0-9]+)\ ([0-9]+)$ ]]; then
-            ROW=${BASH_REMATCH[1]}
+          if [[ $COMMENT =~ ^move\ ([A-Za-z])\ ([0-9]+)$ ]]; then
+            # Extract row letter and column number from the comment
+            ROW_LETTER=${BASH_REMATCH[1]}
             COL=${BASH_REMATCH[2]}
-            echo "Moving to row $ROW, col $COL"
 
-            mv ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json game_state.json
+            # Convert the row letter (A-Z or a-z) to a zero-based index
+            ROW=$(printf "%d" "'${ROW_LETTER^^}")   # Convert to uppercase
+            ROW=$((ROW - 65))                       # 'A' (ASCII 65) becomes 0
+
+            echo "Moving to row $ROW (original: $ROW_LETTER), col $COL"
+
+            # mv ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json game_state.json
 
             # Debug current directory
             echo "Current directory: $(pwd)"
 
-            # Run Python script with the correct path
-            if [ -f src/bubble_pop_game.py ]; then
-              python bubble_pop_game.py move $ROW $COL
-              mv game_state.json ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
-            else
-              echo "Error: src/bubble_pop_game.py not found!"
-              exit 1
-            fi
-          else
-            echo "Invalid move command. Please use: move <row> <column>"
+            # # Run Python script with the correct path
+            # if [ -f src/bubble_pop_game.py ]; then
+            #   python bubble_pop_game.py move $ROW $COL || echo "Python script error" >> error.log
+            #   if [ -f error.log ]; then
+            #     echo "Error occurred during Python script execution"
+            #     exit 1
+            #   else
+            #     mv game_state.json ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
+            #   fi
+            # else
+            #   echo "Error: src/bubble_pop_game.py not found!"
+            #   exit 1
+            # fi
+            #   else
+            # echo "Invalid move command. Please use: move <row> <column>"
+            # exit 1
           fi
 
+      - name: Comment on PR with Error
+        if: failure()
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          pr-number: ${{ github.event.pull_request.number }}
+          message: "An error occurred while processing the move command. Please check the workflow logs for details."
+
       - name: Commit Game State
-        if: ${{ success() }}
+        if: success()
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
           git commit -m "Update game state"
-          git push
+          git push --set-upstream origin ${{ steps.extract_branch.outputs.BRANCH_NAME }}
 
-      - name: Generate Markdown Summary
+      - name: Generate Markdown Game State
+        if: success()
         id: generate_game_state_markdown
         uses: Ma11hewThomas/github-markdown-builder@v1
         with:
           template-file-path: "./states/game-state.hbs"
           json-file-path: "./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json"
           summary: true
-          pull-request: true
 
       - name: Comment PR with Game State
+        if: success()
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ github.event.pull_request.number }}

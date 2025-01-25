@@ -17,7 +17,7 @@ jobs:
         run: |
           cp ./states/game-state-template.json ./states/game-state-${{ github.ref_name }}.json
 
-      - name: Commit Game State
+      - name: Commit Initial Game State
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"

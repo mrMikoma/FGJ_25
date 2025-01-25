@@ -4,27 +4,6 @@ import os
 
 GAME_STATE_FILE = "game_state.json"
 
-# Initialize a new game
-def start_game():
-    initial_game_state = {
-        "player_a": {
-            "name": "Player A",
-            "score": 0
-        },
-        "player_b": {
-            "name": "Player B",
-            "score": 0
-        },
-        "next_player": "First comment will be made by Player A",
-        "game_state": [
-            [":large_blue_circle:"] * 10 for _ in range(10)
-        ]
-    }
-
-    save_game_state(initial_game_state)
-    print("New game initialized!")
-    print(json.dumps(initial_game_state, indent=4))
-
 # Handle a move command
 def make_move(row, col):
     game_state = load_game_state()
@@ -72,9 +51,7 @@ def main():
 
     command = sys.argv[1]
 
-    if command == "start":
-        start_game()
-    elif command == "move":
+    if command == "move":
         if len(sys.argv) != 4:
             print("Usage: python bubble_pop_game.py move <row> <col>")
             sys.exit(1)
