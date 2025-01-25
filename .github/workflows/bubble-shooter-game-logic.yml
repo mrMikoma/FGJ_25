@@ -27,6 +27,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get Comment Author
+        id: extract_comment_author
+        run: |
+          COMMENT_AUTHOR=$(gh api /users/${{ github.event.comment.user.login }} --json login -q '.login')
+          echo "COMMENT_AUTHOR=$COMMENT_AUTHOR" >> $GITHUB_OUTPUT
+          echo "Comment author: $COMMENT_AUTHOR"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
@@ -72,7 +81,7 @@ jobs:
               mv game_state.json ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
             fi
           fi
-      
+
       - name: Remove User Comment after Processing
         if: ${{ github.event.comment }}
         run: |
