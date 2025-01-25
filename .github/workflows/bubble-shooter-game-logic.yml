@@ -86,9 +86,10 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout ${{ steps.extract_branch.outputs.BRANCH_NAME }}
           git add ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
           git commit -m "Update game state"
-          git push --set-upstream origin ${{ steps.extract_branch.outputs.BRANCH_NAME }}
+          git push origin ${{ steps.extract_branch.outputs.BRANCH_NAME }}
 
       - name: Generate Markdown Game State
         if: success()
