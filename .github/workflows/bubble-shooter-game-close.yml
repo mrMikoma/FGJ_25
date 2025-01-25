@@ -24,3 +24,5 @@ jobs:
         run: |
           git push origin --delete ${{ steps.extract_branch_name.outputs.BRANCH_NAME }}
           gh pr close ${{ github.event.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
