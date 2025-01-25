@@ -132,24 +132,26 @@ jobs:
           git push origin ${{ steps.extract_branch.outputs.BRANCH_NAME }}
 
       - name: Check for Winner and Update PR Title
+        if: success()
+        id: update_pr_status
         run: |
           # Load the current game state
           GAME_STATE_FILE="./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json"
-          
+
           if [ ! -f "$GAME_STATE_FILE" ]; then
             echo "Game state file not found. Cannot proceed."
             exit 1
           fi
-          
+
           # Extract player names and scores
           PLAYER_A_NAME=$(jq -r '.player_a.name' $GAME_STATE_FILE)
           PLAYER_A_SCORE=$(jq -r '.player_a.score' $GAME_STATE_FILE)
           PLAYER_B_NAME=$(jq -r '.player_b.name' $GAME_STATE_FILE)
           PLAYER_B_SCORE=$(jq -r '.player_b.score' $GAME_STATE_FILE)
-          
+
           echo "Player A: $PLAYER_A_NAME, Score: $PLAYER_A_SCORE"
           echo "Player B: $PLAYER_B_NAME, Score: $PLAYER_B_SCORE"
-          
+
           # Check if a player has reached 10 points
           if [ "$PLAYER_A_SCORE" -ge 3 ]; then
             WINNER="$PLAYER_A_NAME"
@@ -158,12 +160,13 @@ jobs:
           else
             WINNER=""
           fi
-          
+
           if [ -n "$WINNER" ]; then
             echo "We have a winner: $WINNER"
             
             # Update the game state to mark the winner
             jq --arg winner "$WINNER" '.winner = $winner' $GAME_STATE_FILE > tmp.json && mv tmp.json $GAME_STATE_FILE
+            echo "WINNER=$WINNER" >> $GITHUB_OUTPUT
             
             # Update the PR title to reflect the winner
             NEW_TITLE="Game Over: $WINNER wins versus $PLAYER_B_NAME!"
@@ -172,7 +175,6 @@ jobs:
             
             # Add a comment to the PR to declare the winner
             gh pr comment --body "🎉 Congratulations! $WINNER has won the game with a score of 10!"
-            gh pr lock --lock-reason "Game Over"
             exit 0
           else
             # Construct the active game title with names and scores
@@ -194,9 +196,16 @@ jobs:
           summary: true
 
       - name: Comment PR with Game State
-        if: success()
+        if: 
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ github.event.pull_request.number }}
           message: ${{ steps.generate_game_state_markdown.outputs.markdown }}
           comment-tag: game-state
+
+      - name: Close PR if Winner Declared
+        if: success() && steps.update_pr_status.outputs.WINNER
+        run: |
+          gh pr lock --lock-reason "Game Over"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
