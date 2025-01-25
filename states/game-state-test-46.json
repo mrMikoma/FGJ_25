@@ -1,16 +1,16 @@
 {
     "player_a": {
         "name": "Player A",
-        "score": 0
+        "score": 1
     },
     "player_b": {
         "name": "Player B",
         "score": 1
     },
-    "next_player": "Player A",
+    "next_player": "Player B",
     "game_state": [
         [
-            ":large_blue_circle:",
+            ":boom:",
             ":large_blue_circle:",
             ":large_blue_circle:",
             ":large_blue_circle:",
