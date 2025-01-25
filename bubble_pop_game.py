@@ -9,8 +9,8 @@ def make_move(row, col):
     game_state = load_game_state()
 
     # Validate inputs
-    if not (0 <= row < 10 and 0 <= col < 10):
-        print("Invalid move: Row and Column must be between 0 and 9.")
+    if not (0 <= row < 8 and 0 <= col < 8):
+        print("Invalid move: Row and Column must be between 1 and 8.")
         return
 
     if game_state["game_state"][row][col] != ":large_blue_circle:":

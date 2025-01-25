@@ -4,6 +4,9 @@
 **Next turn**: {{data.next_player}}
 
 ### Game Board
+
+|   |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  | 10  |
+|---|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
 {{#each data.game_state}}
-| {{#each this}}{{#if this}} {{this}} {{else}}   {{/if}} |{{/each}}
+| {{@index}} | {{#each this}}{{#if this}} {{this}} {{else}}   {{/if}} |{{/each}}
 {{/each}}

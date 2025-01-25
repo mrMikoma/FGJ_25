@@ -48,12 +48,12 @@ jobs:
           echo "Processing comment: ${{ github.event.comment.body }}"
           COMMENT="${{ github.event.comment.body }}"
           echo "Comment: $COMMENT"
-          if [[ "$COMMENT" =~ ^move\ ([A-Za-z])\ ([0-9]+)$ ]]; then
+            if [[ "$COMMENT" =~ ^move\ ([A-Ha-h])\ ([0-9]+)$ ]]; then
             # Extract row letter and column number from the comment
             ROW_LETTER=${BASH_REMATCH[1]}           # Extract row letter
             COL=$((${BASH_REMATCH[2]}-1))           # Convert to zero-based index
 
-            # Convert the row letter (A-Z or a-z) to a zero-based index
+            # Convert the row letter (A-H or a-h) to a zero-based index
             ROW=$(printf "%d" "'${ROW_LETTER^^}")   # Convert to uppercase
             ROW=$((ROW - 65))                       # 'A' (ASCII 65) becomes 0
 
@@ -86,7 +86,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout ${{ steps.extract_branch.outputs.BRANCH_NAME }}
           git add ./states/game-state-${{ steps.extract_branch.outputs.BRANCH_NAME }}.json
           git commit -m "Update game state"
           git push origin ${{ steps.extract_branch.outputs.BRANCH_NAME }}
