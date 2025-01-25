@@ -49,10 +49,14 @@ jobs:
           json-file-path: "./states/game-state-${{ github.ref_name }}.json"
           summary: true
 
+      - name: Debug PR URL
+        run: |
+          echo "PR URL: ${{ steps.create_pr.outputs.PR_URL }}"
+          echo "PR Number: ${{ steps.create_pr.outputs.PR_NUMBER }}"
+
       - name: Comment PR with Game State
         uses: thollander/actions-comment-pull-request@v3
         with:
-          pr-number: ${{ steps.create_pr.outputs.PR_NUMBER }}
           message: ${{ steps.generate_game_state_markdown.outputs.markdown }}
         env:
           PR_URL: ${{ steps.create_pr.outputs.PR_URL }}
