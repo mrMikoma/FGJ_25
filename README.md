@@ -73,3 +73,8 @@ The game uses GitHub Actions to:
 
 ## Enjoy the Game 🎈
 The Bubble Pop Game is a great way to add some fun to your GitHub workflow. Compete, strategize, and celebrate your victories directly in your Pull Requests! 🏆
+
+---
+
+## Acknowledgements
+This project has heavily utilized GitHub Copilot and ChatGPT for code suggestions, documentation, and overall development assistance.
