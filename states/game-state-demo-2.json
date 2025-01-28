@@ -1,7 +1,7 @@
 {
   "player_a": {
     "id": "a",
-    "name": "Player A",
+    "name": "EliasSamuli",
     "score": 0,
     "emoji": ":a:",
     "bubble_emoji": ":x:"
@@ -18,7 +18,16 @@
     "name": "Player A",
     "emoji": ":a:"
   },
-  "row_labels": ["A", "B", "C", "D", "E", "F", "G", "H"],
+  "row_labels": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+  ],
   "game_state": [
     [
       ":large_blue_circle:",
